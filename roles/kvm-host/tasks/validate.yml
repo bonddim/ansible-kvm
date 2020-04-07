@@ -1,0 +1,11 @@
+---
+  - name: Verify that virtualization is enabled
+    command: grep -c -E 'svx|vmx' /proc/cpuinfo
+    register: result
+    changed_when: false
+    failed_when: false
+
+  - name: Fail if virtualization is disabled
+    fail:
+      msg: "Virtualization Technology is disabled"
+    when: result.rc != 0
