@@ -1,0 +1,11 @@
+---
+  - name: Install required packages for KVM
+    package:
+      name: "{{ kvm_packages }}"
+      state: present
+
+  - name: Ensure the libvirt daemon is started and enabled
+    service:
+      name: libvirtd
+      state: started
+      enabled: true

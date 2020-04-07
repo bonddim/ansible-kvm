@@ -1,0 +1,5 @@
+---
+# tasks file for kvm-host
+  - include_vars: "os_{{ansible_facts['distribution']|lower}}.yml"
+
+  - import_tasks: install.yml
