@@ -1,8 +1,10 @@
+# vars file for Ubuntu distribution
 ---
   kvm_packages:
     - qemu-kvm
     - qemu-utils
-    - virtinst
-    - cloud-image-utils
+    - libvirt-bin
+    - genisoimage
+    - bridge-utils
     - python-libvirt
     - python-lxml

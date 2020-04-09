@@ -1,9 +1,11 @@
+# vars file for CentOS distribution
 ---
   kvm_packages:
     - qemu-kvm
+    - qemu-img
     - libvirt
     - virt-install
-    - cloud-utils
+    - genisoimage
+    - bridge-utils
     - libvirt-python
     - python-lxml
-    # - libguestfs-tools
