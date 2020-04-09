@@ -1,0 +1,17 @@
+# tasks file for kvm-subnet
+---
+  - name: Define KVM subnet
+    virt_net:
+      name: "{{ kvm_subnet_name }}"
+      xml: "{{ lookup('template', 'subnet.xml.j2') }}"
+      command: define
+
+  - name: Activate KVM subnet
+    virt_net:
+      name: "{{ kvm_subnet_name }}"
+      state: active
+
+  - name: Enable KVM subnet autostart
+    virt_net:
+      name: "{{ kvm_subnet_name }}"
+      autostart: true

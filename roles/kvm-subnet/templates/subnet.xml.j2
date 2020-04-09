@@ -1,0 +1,7 @@
+<network>
+  <name>{{ kvm_subnet_name }}</name>
+  <forward mode='nat'/>
+  <bridge/>
+  <ip address='{{ kvm_subnet_ip }}' netmask='{{ kvm_subnet_mask }}'>
+  </ip>
+</network>
