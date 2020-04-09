@@ -1,0 +1,7 @@
+# tasks file for CentOS distribution
+---
+  - name: Install required packages for KVM 
+    yum:
+      name: "{{ kvm_packages }}"
+      state: present
+      update_cache: yes

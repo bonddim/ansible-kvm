@@ -1,7 +1,15 @@
----
 # tasks file for kvm-host
+---
   - import_tasks: validate.yml
 
-  - include_vars: "os_{{ansible_facts['distribution']|lower}}.yml"
+  - name: Include vars for distribution
+    include_vars: "vars_{{ansible_facts['distribution']|lower}}.yml"
 
-  - import_tasks: install.yml
+  - name: Include tasks for distribution
+    include_tasks: "tasks_{{ansible_facts['distribution']|lower}}.yml"
+
+  - name: Ensure the libvirt daemon is started and enabled
+    service:
+      name: libvirtd
+      state: started
+      enabled: true
