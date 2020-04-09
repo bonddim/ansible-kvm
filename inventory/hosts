@@ -1,0 +1,14 @@
+[kvm_host]
+host1 ansible_host="{{ deploy_host }}" ansible_user="{{ remote_user }}"
+
+[kvm_guests]
+guest1 ansible_host=192.168.110.10 
+guest2 ansible_host=192.168.110.20
+
+[kvm_guests:vars]
+ansible_password="{{ kvm_vm_password }}"
+ansible_ssh_common_args="-o 'ProxyJump {{ hostvars[groups['kvm_host'][0]]['ansible_user'] }}@{{ hostvars[groups['kvm_host'][0]]['ansible_host'] }}' -o ControlPersist=180s -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+[node:children]
+kvm_host
+kvm_guests

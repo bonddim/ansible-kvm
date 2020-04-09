@@ -1,0 +1,12 @@
+# main playbook
+---
+  - hosts: kvm_host
+    become: true
+    roles:
+      - kvm-host
+      - kvm-subnet
+      - kvm-guests
+
+  - hosts: kvm_guests
+    gather_facts: false
+    remote_user: "{{ kvm_vm_username }}"

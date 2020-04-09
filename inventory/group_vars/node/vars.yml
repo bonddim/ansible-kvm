@@ -1,0 +1,12 @@
+---
+  # KVM base settings
+  kvm_vm_username: someuser
+  kvm_vm_password: "{{ vault_kvm_vm_password }}"
+
+  kvm_subnet: "192.168.110.0"
+  kvm_subnet_ip: "192.168.110.1"
+  kvm_subnet_mask: "255.255.255.0"
+  kvm_subnet_gateway: "{{ kvm_subnet_ip }}"
+  kvm_subnet_dns_servers: 
+    - "{{ kvm_subnet_ip }}"
+  kvm_subnet_name: custom
