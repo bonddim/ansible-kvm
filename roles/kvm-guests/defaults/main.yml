@@ -1,0 +1,7 @@
+---
+# defaults file for kvm-guests
+  kvm_images_dir: /var/lib/libvirt/images
+
+  cloud_image_link: https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1907.qcow2
+  cloud_image_sha: 520d01c2f2e1ed24cb2f15a4325aa30773930a2961b5484a68cf11b4a415c512
+  cloud_image_name: "{{ cloud_image_link | basename }}"

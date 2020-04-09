@@ -1,0 +1,32 @@
+<domain type={% if ansible_facts['os_family'] == 'RedHat' %}'qemu'{% elif ansible_facts['os_family'] == 'Debian' %}'kvm'{% endif %}>
+  <name>{{ local_vm_hostname }}</name>
+  <memory unit='KiB'>1048576</memory>
+  <vcpu placement='static'>1</vcpu>
+  <os>
+    <type arch='x86_64'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+  <devices>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='{{ local_vm_disk }}'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='{{ cloud_init_iso }}'/>
+      <target dev='hda' bus='ide'/>
+      <readonly/>
+    </disk>
+    <interface type='network'>
+      <source network='{{ kvm_subnet_name }}'/>
+      <model type='virtio'/>
+    </interface>
+    <serial type='pty'>
+      <target port='0'/>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+  </devices>
+</domain>

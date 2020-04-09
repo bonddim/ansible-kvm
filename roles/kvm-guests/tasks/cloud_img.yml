@@ -1,0 +1,18 @@
+# tasks to download base cloud-image
+---
+  - name: Ensure that libvirt dir exists
+    file:
+      path: "{{ kvm_images_dir }}"
+      state: directory
+
+  - name: Check image sha256 checksum
+    stat:
+      path: "{{ kvm_images_dir }}/{{ cloud_image_name }}"
+      checksum_algorithm: sha256
+    register: cloud_image
+
+  - name: Download cloud image if not exists
+    get_url:
+      url: "{{ cloud_image_link }}"
+      dest: "{{ kvm_images_dir }}"
+    when: cloud_image.stat.exists == False or cloud_image.stat.checksum != cloud_image_sha

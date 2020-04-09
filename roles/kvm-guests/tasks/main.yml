@@ -1,0 +1,24 @@
+# tasks file for kvm-guests
+---
+  - import_tasks: cloud_img.yml
+
+  - name: Initialize VMs
+    include_tasks: init_vm.yml
+    vars:
+      local_vm_hostname: "local-{{ hostvars[kvm_instance]['ansible_host'] | to_uuid }}"
+      local_vm_ipaddr: "{{ hostvars[kvm_instance]['ansible_host'] }}"
+      local_vm_disk: "{{ kvm_images_dir }}/{{ local_vm_hostname }}/{{ cloud_image_name }}"
+      cloud_init_iso: "{{ kvm_images_dir }}/{{ local_vm_hostname }}/cloud-init.iso"
+    loop: "{{ groups['kvm_guests'] }}"
+    loop_control:
+      loop_var: kvm_instance
+
+  - name: Wait for opened SSH port
+    wait_for:
+      host: "{{ local_vm_ipaddr }}"
+      port: 22
+      timeout: 300
+      sleep: 5
+    vars:
+      local_vm_ipaddr: "{{ hostvars[item]['ansible_host'] }}"
+    loop: "{{ groups['kvm_guests'] }}"

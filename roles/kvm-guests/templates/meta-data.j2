@@ -1,0 +1,10 @@
+instance-id: iid-local02
+local-hostname: {{ local_vm_hostname }}
+network-interfaces: |
+  auto eth0
+  iface eth0 inet static
+    address {{ local_vm_ipaddr }}
+    network {{ kvm_subnet }}
+    netmask {{ kvm_subnet_mask }}
+    gateway {{ kvm_subnet_gateway }}
+    dns-nameservers {{ kvm_subnet_dns_servers | join(' ') }}

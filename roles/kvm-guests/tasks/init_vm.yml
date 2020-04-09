@@ -1,0 +1,37 @@
+# tasks to initialize and start VM instance
+---
+  - name: VM "{{ kvm_instance }}" | Create VM directory if not exists
+    file:
+      path: "{{ kvm_images_dir }}/{{ local_vm_hostname }}"
+      state: directory
+
+  - name: VM "{{ kvm_instance }}" | Create disk image from base cloud-image
+    shell: "qemu-img create -b {{ kvm_images_dir }}/{{ cloud_image_name }} -f qcow2 {{ local_vm_disk }}"
+    args:
+      creates: "{{ local_vm_disk }}"
+
+  - name: VM "{{ kvm_instance }}" | Copy cloud-init source files
+    template:
+      dest: "{{ kvm_images_dir }}/{{ local_vm_hostname }}/{{ item[:-3] }}"
+      src: "{{ item }}"
+    loop:
+      - user-data.j2
+      - meta-data.j2
+    register: cloud_source
+
+  - name: VM "{{ kvm_instance }}" | Create custom cloud-init image if sources changed
+    shell: genisoimage -output cloud-init.iso -volid cidata -joliet -rock user-data meta-data
+    args:
+      chdir: "{{ kvm_images_dir }}/{{ local_vm_hostname }}"
+    when: cloud_source.changed
+
+  - name: VM "{{ kvm_instance }}" | Define VM with name "{{ local_vm_hostname }}"
+    virt:
+      xml: "{{ lookup('template', 'vm.xml.j2') }}"
+      command: define
+
+  - name: VM "{{ kvm_instance }}" | Start VM with autostart
+    virt:
+      name: "{{ local_vm_hostname }}"
+      state: running
+      autostart: true
