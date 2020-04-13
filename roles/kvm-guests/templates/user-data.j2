@@ -3,3 +3,5 @@ user: {{ kvm_vm_username }}
 password: {{ kvm_vm_password }}
 chpasswd: { expire: False }
 ssh_pwauth: True
+packages:
+  - openssh-server
