@@ -1,10 +1,11 @@
 instance-id: iid-local02
 local-hostname: {{ local_vm_hostname }}
+{% set if_name = 'ens2' if ( cloud_image_distro == 'ubuntu') else 'eth0' -%}
 network-interfaces: |
-  auto eth0
-  iface eth0 inet static
-    address {{ local_vm_ipaddr }}
-    network {{ kvm_subnet }}
-    netmask {{ kvm_subnet_mask }}
-    gateway {{ kvm_subnet_gateway }}
-    dns-nameservers {{ kvm_subnet_dns_servers | join(' ') }}
+  auto {{ if_name }}
+  iface {{ if_name }}
+  address {{ local_vm_ipaddr }}
+  network {{ kvm_subnet }}
+  netmask {{ kvm_subnet_mask }}
+  gateway {{ kvm_subnet_gateway }}
+  dns-nameservers {{ kvm_subnet_dns_servers | join(' ') }}
