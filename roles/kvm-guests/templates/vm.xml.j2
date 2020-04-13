@@ -1,4 +1,4 @@
-<domain type={% if ansible_facts['os_family'] == 'RedHat' %}'qemu'{% elif ansible_facts['os_family'] == 'Debian' %}'kvm'{% endif %}>
+<domain type='qemu'>
   <name>{{ local_vm_hostname }}</name>
   <memory unit='KiB'>1048576</memory>
   <vcpu placement='static'>1</vcpu>
