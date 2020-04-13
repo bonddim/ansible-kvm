@@ -5,6 +5,9 @@
       path: "{{ kvm_images_dir }}"
       state: directory
 
+  - name: Include cloud-image default vars
+    include_vars: "img_{{ cloud_image_distro }}.yml"
+
   - name: Check image sha256 checksum
     stat:
       path: "{{ kvm_images_dir }}/{{ cloud_image_name }}"

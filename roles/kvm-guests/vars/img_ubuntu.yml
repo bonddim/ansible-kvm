@@ -1,0 +1,5 @@
+# vars for ubuntu cloud image
+---
+  cloud_image_link: https://cloud-images.ubuntu.com/bionic/20200407/bionic-server-cloudimg-amd64.img
+  cloud_image_sha: 2f6bc5e7d9acfea8f5bd72893d2faa037b908a1e75d54f2ab8deb0f3da045d00
+  cloud_image_name: "{{ cloud_image_link | basename }}"
