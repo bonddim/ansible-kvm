@@ -1,0 +1,20 @@
+# tasks file for docker-engine
+---
+  - name: Include vars for distribution
+    include_vars: "vars_{{ansible_facts['distribution']|lower}}.yml"
+
+  - name: Run tasks for distribution
+    include_tasks: "tasks_{{ansible_facts['distribution']|lower}}.yml"
+
+  - name: Ensure the docker daemon is started and enabled
+    service:
+      name: docker
+      state: started
+      enabled: true
+
+  - name: Add user(s) to docker group
+    user:
+      name: "{{ item }}"
+      groups: docker
+      append: true
+    loop: "{{ docker_users }}"

@@ -1,0 +1,19 @@
+# docker-engine vars for CentOS
+---
+  docker_engine:
+    repo_baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    repo_gpgkey: https://download.docker.com/linux/centos/gpg
+    deprecated_packages:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - python-docker-py

@@ -1,0 +1,21 @@
+# docker-engine tasks for CentOS
+---
+  - name: Remove docker deprecated packages
+    yum:
+      name: "{{ docker_engine.deprecated_packages }}"
+      state: absent
+  
+  - name: Add docker official repository
+    yum_repository:
+      name: docker-ce
+      description: docker-ce-stable
+      baseurl: "{{ docker_engine.repo_baseurl }}"
+      gpgkey: "{{ docker_engine.repo_gpgkey }}"
+      state: present
+      enabled: true
+      gpgcheck: true
+
+  - name: Install docker packages
+    yum:
+      name: "{{ docker_engine.packages }}"
+      state: present

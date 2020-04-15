@@ -1,0 +1,22 @@
+# docker-engine vars for Ubuntu
+---
+  docker_engine:
+    repo_baseurl: https://download.docker.com/linux/ubuntu
+    repo_gpgkey: 0EBFCD88
+    deprecated_packages:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+    required_packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - python{{ installed_python }}-docker

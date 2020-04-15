@@ -1,0 +1,4 @@
+# defaults file for docker-engine
+---
+  docker_users:
+    - "{{ ansible_env['SUDO_USER'] | default('root') }}"
