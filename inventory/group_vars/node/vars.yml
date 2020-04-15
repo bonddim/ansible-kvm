@@ -10,3 +10,6 @@
   kvm_subnet_dns_servers: 
     - "{{ kvm_subnet_ip }}"
   kvm_subnet_name: custom
+
+  # Set pip and python packages versions according to discovered interpreter
+  installed_python: "{{ ( ansible_python_version is version('3', '>=')) | ternary('3', '') }}"

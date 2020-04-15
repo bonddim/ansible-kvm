@@ -7,5 +7,5 @@
     - libvirt-bin
     - genisoimage
     - bridge-utils
-    - python-libvirt
-    - python-lxml
+    - python{{ installed_python }}-libvirt
+    - python{{ installed_python }}-lxml
