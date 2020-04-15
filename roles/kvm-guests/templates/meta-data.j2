@@ -1,6 +1,6 @@
 instance-id: iid-local02
 local-hostname: {{ local_vm_hostname }}
-{% set if_name = 'ens2' if ( cloud_image_distro == 'ubuntu') else 'eth0' -%}
+{% set if_name = 'enp0s2' if ( cloud_image_distro == 'ubuntu') else 'eth0' -%}
 network-interfaces: |
   auto {{ if_name }}
   iface {{ if_name }} inet static 
