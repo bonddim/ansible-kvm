@@ -1,6 +1,7 @@
 # vars file for Ubuntu distribution
 ---
   kvm_packages:
+    - qemu
     - qemu-kvm
     - qemu-utils
     - libvirt-bin

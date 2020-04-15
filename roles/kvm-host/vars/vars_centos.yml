@@ -4,7 +4,6 @@
     - qemu-kvm
     - qemu-img
     - libvirt
-    - virt-install
     - genisoimage
     - bridge-utils
     - libvirt-python
