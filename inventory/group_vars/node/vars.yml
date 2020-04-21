@@ -13,3 +13,10 @@
 
   # Set pip and python packages versions according to discovered interpreter
   installed_python: "{{ ( ansible_python_version is version('3', '>=')) | ternary('3', '') }}"
+
+  # Database settings
+  mysql:
+    db_name: wordpress
+    db_user: wpuser
+    db_pass: "{{ vault_mysql_db_pass }}"
+    root_pass: "{{ vault_mysql_root_pass }}"

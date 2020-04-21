@@ -1,0 +1,82 @@
+# tasks file for wordpress-app
+---
+  - name: Create application docker subnet
+    docker_network:
+      name: "{{ app_subnet_name }}"
+      state: present
+
+  - name: Create volume directories
+    file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+      - "{{ mysql_data }}"
+      - "{{ html_data }}"
+      - "{{ nginx_data }}"
+
+  - name: Copy configuration files
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    loop:
+      - { src: wordpress/wp-config.php.j2 , dest: "{{ html_data }}/wp-config.php"}
+      - { src: nginx/wordpress.conf.j2 , dest: "{{ nginx_data }}/wordpress.conf"}
+
+  - name: Create database container
+    docker_container:
+      name: mysql
+      image: mysql:8
+      restart_policy: always
+      env:
+        MYSQL_ROOT_PASSWORD: "{{ mysql.root_pass }}"
+        MYSQL_DATABASE: "{{ mysql.db_name }}"
+        MYSQL_USER: "{{ mysql.db_user }}"
+        MYSQL_PASSWORD: "{{ mysql.db_pass }}"
+      volumes:
+        - "{{ mysql_data }}:/var/lib/mysql"
+      networks_cli_compatible: true
+      networks:
+        - name: "{{ app_subnet_name }}"
+    register: docker_inspect
+
+  - name: Wait for database is ready
+    wait_for:
+      host: "{{docker_inspect['ansible_facts']['docker_container']['NetworkSettings']['Networks'][app_subnet_name]['IPAddress']}}"
+      port: 3306
+
+  - name: Create WordPress container
+    docker_container:
+      name: wordpress
+      image: wordpress:php7.4-fpm-alpine
+      restart_policy: always
+      volumes:
+        - "{{ html_data }}:/var/www/html"
+      networks_cli_compatible: true
+      networks:
+        - name: "{{ app_subnet_name }}"
+    register: docker_inspect
+
+  - name: Wait for WordPress is ready
+    wait_for:
+      host: "{{docker_inspect['ansible_facts']['docker_container']['NetworkSettings']['Networks'][app_subnet_name]['IPAddress']}}"
+      port: 9000
+
+  - name: Create nginx container
+    docker_container:
+      name: nginx
+      image: "nginx:1.17"
+      restart_policy: always
+      volumes:
+        - "{{ nginx_data }}:/etc/nginx/conf.d"
+        - "{{ html_data }}:/var/www/html"
+      published_ports:
+        - 80:80
+      networks_cli_compatible: true
+      networks:
+        - name: "{{ app_subnet_name }}"
+    register: docker_inspect
+
+  - name: Wait for NGINX is ready
+    wait_for:
+      host: "{{docker_inspect['ansible_facts']['docker_container']['NetworkSettings']['Networks'][app_subnet_name]['IPAddress']}}"
+      port: 80

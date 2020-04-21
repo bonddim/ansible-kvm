@@ -1,0 +1,8 @@
+# defaults file for wordpress-app
+---
+  app_subnet_name: wordpress-app
+
+  # containers persistent data
+  mysql_data: /srv/worpress-app/mysql
+  html_data: /srv/worpress-app/html
+  nginx_data: /srv/worpress-app/nginx

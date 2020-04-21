@@ -8,5 +8,8 @@
       - kvm-guests
 
   - hosts: kvm_guests
-    gather_facts: false
     remote_user: "{{ kvm_vm_username }}"
+    become: true
+    roles:
+      - docker-engine
+      - wordpress-app
