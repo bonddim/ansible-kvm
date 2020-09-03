@@ -1,0 +1,17 @@
+# Stop and delete VM instance
+---
+  - name: VM "{{ kvm_instance }}" | Destroy and undefine VM "{{ local_vm_hostname }}"
+    virt:
+      name: "{{ local_vm_hostname }}"
+      command: "{{ item }}"
+    ignore_errors: true
+    loop:
+      - destroy
+      - undefine
+    tags: delete-vm
+
+  - name: VM "{{ kvm_instance }}" | Delete VM's directory
+    file:
+      path: "{{ kvm_images_dir }}/{{ local_vm_hostname }}"
+      state: absent
+    tags: delete-vm

@@ -1,5 +1,14 @@
 # tasks file for kvm-guests
 ---
+  - name: Delete VMs
+    include_tasks: delete_vm.yml
+    vars:
+      local_vm_hostname: "local-{{ hostvars[kvm_instance]['ansible_host'] | to_uuid }}"
+    loop: "{{ groups['kvm_guests'] }}"
+    loop_control:
+      loop_var: kvm_instance
+    tags: [ delete-vm, never ]
+
   - import_tasks: cloud_img.yml
 
   - name: Initialize VMs
